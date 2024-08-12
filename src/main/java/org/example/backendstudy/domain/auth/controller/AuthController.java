@@ -6,6 +6,7 @@ import org.example.backendstudy.domain.auth.TestUser;
 import org.example.backendstudy.domain.auth.controller.dto.LoginRequest;
 import org.example.backendstudy.domain.auth.controller.dto.LoginResponse;
 import org.example.backendstudy.domain.auth.service.AuthService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) throws Exception {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
         String email = request.getUserEmail();
         String password = request.getPassword();
 
@@ -33,6 +34,6 @@ public class AuthController {
                 .status(200)
                 .build();
 
-        return response;
+        return ResponseEntity.ok().body(response);
     }
 }

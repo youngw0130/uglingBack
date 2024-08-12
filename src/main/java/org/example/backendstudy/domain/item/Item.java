@@ -3,10 +3,7 @@ package org.example.backendstudy.domain.item;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.backendstudy.domain.item.grade.Grade;
 import org.example.backendstudy.domain.item.types.Category;
 
@@ -26,14 +23,13 @@ public class Item {
     private String itemName; // 상품명
     private Long itemPrice; // 상품 가격
     private int itemCount; // 상품 재고 수량
-    private int itemWeight; // 상품 무게
-    private int itemCalory; // 상품 칼로리
-    private String itemIngre; // 상품 영양성분
-    private String itemWarn; // 상품 주의사항
+    private String itemExplain; // 상품 설명
+
+    @Enumerated(EnumType.STRING)
     private Category itemCategory; // 상품 카테고리
 
     @OneToMany(
-            mappedBy = "grade",
+            mappedBy = "item",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -44,5 +40,18 @@ public class Item {
     public void addGrade(Grade grade) {
         grade.connectItem(this);
         itemGradeList.add(grade);
+    }
+
+    @Builder
+    public Item(
+            Long itemId, String itemName, Long itemPrice,
+            int itemCount, String itemExplain, Category itemCategory
+    ) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.itemCount = itemCount;
+        this.itemExplain = itemExplain;
+        this.itemCategory = itemCategory;
     }
 }
